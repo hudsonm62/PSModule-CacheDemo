@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-latest ]
+        os: [ windows-latest, ubuntu-latest, macos-latest ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
@@ -18,7 +18,7 @@ jobs:
 
       - name: Set cache path
         run: |
-          if (${{ runner.os }} -eq 'Windows') {
+          if ('${{ runner.os }}' -eq 'Windows') {
             echo "CACHE_PATH=$(Join-Path $HOME 'Documents\PowerShell\Modules')" >> $env:GITHUB_ENV
           } else {
             echo "CACHE_PATH=$HOME/.local/share/powershell/Modules" >> $GITHUB_ENV
