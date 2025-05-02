@@ -21,7 +21,7 @@ jobs:
           if ('${{ runner.os }}' -eq 'Windows') {
             echo "CACHE_PATH=$(Join-Path $HOME 'Documents\PowerShell\Modules')" >> $env:GITHUB_ENV
           } else {
-            echo "CACHE_PATH=$HOME/.local/share/powershell/Modules" >> $GITHUB_ENV
+            echo "CACHE_PATH=$HOME/.local/share/powershell/Modules" >> $env:GITHUB_ENV
           }
 
       - name: Cache PowerShell modules
