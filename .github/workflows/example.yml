@@ -14,17 +14,24 @@ jobs:
 
       - name: Cache PowerShell modules
         uses: actions/cache@v4
+        id: cache
         with:
           path: C:\Users\runneradmin\Documents\PowerShell\Modules
           key: ${{ runner.os }}-pwsh-${{ hashFiles('**/requirements.psd1') }}
           restore-keys: |
             ${{ runner.os }}-pwsh-
 
-      - name: Install Dependencies
+      - name: Install Dependencies if not found
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module -Name PSDepend -Scope CurrentUser -AcceptLicense -Confirm:$false -Verbose
-          Invoke-PSDepend -Install -Import -Force -Verbose
+          Install-Module -Name PSDepend -Scope CurrentUser -AcceptLicense -Confirm:$false
+          Invoke-PSDepend -Install -Force -Verbose
+
+      - name: Import Modules
+        run: |
+          Import-Module -Name PSDepend -Confirm:$false -Verbose
+          Invoke-PSDepend -Import -Force -Verbose
 
       - name: Run Something
         run: Invoke-PSake -NoLogo
