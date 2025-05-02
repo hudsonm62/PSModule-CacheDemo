@@ -1,0 +1,29 @@
+name: PS Cache Example
+on: 
+  - push
+  - workflow_dispatch
+defaults:
+  run:
+    shell: pwsh # ps7
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache PowerShell modules
+        uses: actions/cache@v4
+        with:
+          path: C:\Users\runneradmin\Documents\PowerShell\Modules
+          key: ${{ runner.os }}-pwsh-${{ hashFiles('**/requirements.psd1') }}
+          restore-keys: |
+            ${{ runner.os }}-pwsh-
+
+      - name: Install Dependencies
+        run: |
+          Install-Module -Name PSDepend -Scope CurrentUser
+          Invoke-PSDepend -Path "./requirements.psd1" -Install -Import -Force
+
+      - name: Run Something
+        run: Invoke-PSake -NoLogo
