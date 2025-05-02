@@ -30,7 +30,7 @@ jobs:
 
       - name: Import Modules
         run: |
-          Import-Module -Name PSDepend -Confirm:$false -Verbose
+          Import-Module -Name PSDepend -Verbose
           Invoke-PSDepend -Import -Force -Verbose
 
       - name: Run Something
