@@ -22,8 +22,9 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          Install-Module -Name PSDepend -Scope CurrentUser
-          Invoke-PSDepend -Path "./requirements.psd1" -Install -Import -Force
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module -Name PSDepend -Scope CurrentUser -AcceptLicense -Confirm:$false -Verbose
+          Invoke-PSDepend -Install -Import -Force -Verbose
 
       - name: Run Something
         run: Invoke-PSake -NoLogo
