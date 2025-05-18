@@ -1,0 +1,27 @@
+name: Output Cache Paths
+on: 
+  - push
+  - workflow_dispatch
+
+jobs:
+  ps7-paths:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest, ubuntu-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+        - name: Output ${{ runner.os }}'s PS7 PSModulePath
+          run: Write-Output $env:PSModulePath
+
+  ps5-paths:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: powershell
+    steps:
+        - name: Output ${{ runner.os }}'s PS5 PSModulePath
+          run: Write-Output $env:PSModulePath
